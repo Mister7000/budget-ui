@@ -33,5 +33,6 @@ registerLocaleData(locale);
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true },
   ],
+  bootstrap: [AppComponent],
 })
 export class AppModule {}
