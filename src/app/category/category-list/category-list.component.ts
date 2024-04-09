@@ -5,6 +5,7 @@ import { Category, CategoryCriteria } from '../../shared/domain';
 import { CategoryService } from '../category.service';
 import { ToastService } from '../../shared/service/toast.service';
 import { finalize } from 'rxjs';
+import { FormBuilder } from '@angular/forms';
 
 @Component({
   selector: 'app-category-list',
@@ -21,6 +22,7 @@ export class CategoryListComponent {
     private readonly modalCtrl: ModalController,
     private readonly categoryService: CategoryService,
     private readonly toastService: ToastService,
+    private readonly formBuilder: FormBuilder,
   ) {}
 
   async openModal(category?: Category): Promise<void> {
