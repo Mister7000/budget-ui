@@ -5,6 +5,7 @@ import { filter, finalize, from } from 'rxjs';
 import { CategoryService } from '../category.service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ToastService } from '../../shared/service/toast.service';
+import { Category } from '../../shared/domain';
 
 @Component({
   selector: 'app-category-modal',
@@ -13,6 +14,9 @@ import { ToastService } from '../../shared/service/toast.service';
 export class CategoryModalComponent {
   readonly categoryForm: FormGroup;
   submitting = false;
+
+  // Passed into the component by the ModalController, available in the ionViewWillEnter
+  category: Category = {} as Category;
 
   constructor(
     private readonly actionSheetService: ActionSheetService,
@@ -24,6 +28,10 @@ export class CategoryModalComponent {
     this.categoryForm = this.formBuilder.group({
       name: ['', [Validators.required, Validators.maxLength(40)]],
     });
+  }
+
+  ionViewWillEnter(): void {
+    this.categoryForm.patchValue(this.category);
   }
 
   cancel(): void {
@@ -54,4 +62,16 @@ export class CategoryModalComponent {
         },
       });
   }
+
+  async openModal(category?: Category): Promise<void> {
+    const modal = await this.modalCtrl.create({
+      component: CategoryModalComponent,
+      componentProps: { category: category ? { ...category } : {} },
+    });
+    modal.present();
+    const { role } = await modal.onWillDismiss();
+    if (role === 'refresh') this.reloadCategories();
+  }
+
+  private reloadCategories() {}
 }
