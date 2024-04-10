@@ -16,6 +16,9 @@ export class ExpenseListComponent {
   addMonths = (number: number): void => {
     this.date = addMonths(this.date, number);
   };
+  expenseGroups: any;
+  loading: any;
+  lastPageReached: any;
 
   async openModal(expense?: Expense): Promise<void> {
     const modal = await this.modalCtrl.create({
@@ -26,4 +29,6 @@ export class ExpenseListComponent {
     const { role } = await modal.onWillDismiss();
     console.log('role', role);
   }
+
+  loadNextExpensePage($event: any) {}
 }

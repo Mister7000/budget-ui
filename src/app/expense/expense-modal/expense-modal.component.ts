@@ -13,6 +13,7 @@ import { ToastService } from '../../shared/service/toast.service';
 })
 export class ExpenseModalComponent {
   categories: (NgIterable<unknown> & NgIterable<any>) | undefined | null;
+  category: any;
   constructor(
     private readonly actionSheetService: ActionSheetService,
     private readonly modalCtrl: ModalController,
