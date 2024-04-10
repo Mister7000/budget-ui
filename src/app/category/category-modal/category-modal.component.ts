@@ -30,11 +30,6 @@ export class CategoryModalComponent {
       name: ['', [Validators.required, Validators.maxLength(40)]],
     });
   }
-
-  ionViewWillEnter(): void {
-    this.categoryForm.patchValue(this.category);
-  }
-
   cancel(): void {
     this.modalCtrl.dismiss(null, 'cancel');
   }
@@ -52,6 +47,10 @@ export class CategoryModalComponent {
         },
         error: (error) => this.toastService.displayErrorToast('Could not save category', error),
       });
+  }
+
+  ionViewWillEnter(): void {
+    this.categoryForm.patchValue(this.category);
   }
 
   delete(): void {
