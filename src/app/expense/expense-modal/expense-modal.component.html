@@ -1,1 +1,70 @@
-Expense Modal
+<!-- ------ -->
+<!-- Header -->
+<!-- ------ -->
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button color="medium" (click)="cancel()">
+        <ion-icon slot="start" name="close"></ion-icon>
+        Cancel
+      </ion-button>
+    </ion-buttons>
+
+    <ion-title>Add expenses</ion-title>
+
+    <ion-buttons slot="end">
+      <ion-button (click)="save()">
+        <ion-icon slot="start" name="save"></ion-icon>
+        Save
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<!-- ------- -->
+<!-- Content -->
+<!-- ------- -->
+<ion-content class="ion-padding">
+  <ion-item>
+    <ion-icon name="text" slot="start"></ion-icon>
+    <ion-input maxlength="40" placeholder="Enter the expenses's name" required></ion-input>
+  </ion-item>
+
+  <ion-item>
+    <ion-icon name="pricetag" slot="start"></ion-icon>
+    <ion-select interface="popover" placeholder="Choose a category" formControlName="categoryId"> </ion-select>
+    <ion-button color="primary" slot="end" (click)="showCategoryModal()">
+      <ion-icon slot="icon-only" name="add"></ion-icon>
+    </ion-button>
+  </ion-item>
+
+  <ion-item>
+    <ion-icon name="wallet-outline" slot="start"></ion-icon>
+    <ion-input
+      type="number"
+      inputmode="decimal"
+      placeholder="Enter the amount in CHF"
+      step="0.05"
+      formControlName="amount"
+    ></ion-input>
+    <ion-note slot="end">CHF</ion-note>
+  </ion-item>
+
+  <ion-item>
+    <ion-icon name="calendar-number-outline" slot="start"></ion-icon>
+    <ion-datetime-button datetime="datetime"></ion-datetime-button>
+    <ion-modal [keepContentsMounted]="true">
+      <ng-template>
+        <ion-datetime color="light" presentation="date" id="datetime" formControlName="date">
+          <span slot="title">Select the purchase date</span>
+        </ion-datetime>
+      </ng-template>
+    </ion-modal>
+  </ion-item>
+
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button (click)="delete()" color="danger">
+      <ion-icon name="trash"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+</ion-content>
