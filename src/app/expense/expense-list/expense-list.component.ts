@@ -31,4 +31,6 @@ export class ExpenseListComponent {
   }
 
   loadNextExpensePage($event: any) {}
+
+  reloadExpenses($event: any) {}
 }
