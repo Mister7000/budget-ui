@@ -3,16 +3,15 @@
 <!-- ------ -->
 <ion-header>
   <ion-toolbar>
+    <!-- dynamic Title -->
+    <ion-title>{{ expense.id ? 'Edit' : 'Add' }} expense</ion-title>
     <ion-progress-bar *ngIf="submitting" type="indeterminate"></ion-progress-bar>
-
     <ion-buttons slot="start" (click)="cancel()">
       <ion-button color="medium" (click)="cancel()" [disabled]="submitting">
         <ion-icon slot="start" name="close"></ion-icon>
         Cancel
       </ion-button>
     </ion-buttons>
-
-    <ion-title>Add expenses</ion-title>
 
     <ion-buttons slot="end">
       <ion-button
@@ -77,6 +76,12 @@
       </ng-template>
     </ion-modal>
   </ion-item>
+
+  <ion-fab *ngIf="expense.id" slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab-button (click)="delete()" color="danger" [disabled]="submitting">
+      <ion-icon name="trash"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 
   <ion-fab slot="fixed" vertical="bottom" horizontal="end">
     <ion-fab-button (click)="delete()" color="danger">

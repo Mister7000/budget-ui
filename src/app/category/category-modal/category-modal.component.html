@@ -4,6 +4,7 @@
 <ion-header>
   <!-- Progress Bar -->
   <ion-toolbar>
+    <!-- dynamic Title -->
     <ion-title>{{ category.id ? 'Edit' : 'Add' }} category</ion-title>
     <ion-progress-bar *ngIf="submitting" type="indeterminate"></ion-progress-bar>
     <ion-buttons slot="start">
