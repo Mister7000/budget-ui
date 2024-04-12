@@ -5,7 +5,9 @@
   <ion-toolbar>
     <!-- dynamic Title -->
     <ion-title>{{ expense.id ? 'Edit' : 'Add' }} expense</ion-title>
+
     <ion-progress-bar *ngIf="submitting" type="indeterminate"></ion-progress-bar>
+
     <ion-buttons slot="start" (click)="cancel()">
       <ion-button color="medium" (click)="cancel()" [disabled]="submitting">
         <ion-icon slot="start" name="close"></ion-icon>
