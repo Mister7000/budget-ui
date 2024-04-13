@@ -52,7 +52,7 @@ export class ExpenseModalComponent implements OnInit {
   save(): void {
     this.submitting = true;
     this.expenseService
-      .upsertExpense({ ...this.expenseForm.value, date: format(parseISO(this.expenseForm.value.date), 'dd-MM-yyyy') })
+      .upsertExpense({ ...this.expenseForm.value, date: format(parseISO(this.expenseForm.value.date), 'yyyy-MM-dd') })
       .subscribe({
         next: () => {
           this.toastService.displaySuccessToast('Expense saved');
