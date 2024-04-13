@@ -21,15 +21,14 @@ interface ExpenseGroup {
 })
 export class ExpenseListComponent implements OnInit, OnDestroy {
   date = set(new Date(), { date: 1 });
+  expenses: Expense[] | null = null;
+  categories: Category[] = [];
   expenseGroups: ExpenseGroup[] | null = null;
   readonly initialSort = 'name,asc';
   lastPageReached = false;
   loading = false;
-  readonly searchForm: FormGroup;
   searchCriteria: ExpenseCriteria = { page: 0, size: 25, sort: this.initialSort };
-  categories: Category[] = [];
-  expenses: Expense[] | null = null;
-
+  readonly searchForm: FormGroup;
   readonly sortOptions: SortOption[] = [
     { label: 'Created at (newest first)', value: 'createdAt' },
     { label: 'Created at (oldest first)', value: 'createdAt' },
