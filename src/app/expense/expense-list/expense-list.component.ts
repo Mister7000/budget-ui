@@ -39,14 +39,15 @@ export class ExpenseListComponent implements OnInit, OnDestroy {
   lastPageReached = false;
   loading = false;
   searchCriteria: ExpenseCriteria = { page: 0, size: 25, sort: this.initialSort };
+
   readonly searchForm: FormGroup;
   readonly sortOptions: SortOption[] = [
-    { label: 'Created at (newest first)', value: 'createdAt' },
-    { label: 'Created at (oldest first)', value: 'createdAt' },
-    { label: 'Date (newest first)', value: 'date' },
-    { label: 'Date (oldest first)', value: 'date' },
-    { label: 'Name (A-Z)', value: 'name' },
-    { label: 'Name (Z-A)', value: 'name' },
+    { label: 'Created at (newest first)', value: 'createdAt,desc' },
+    { label: 'Created at (oldest first)', value: 'createdAt,asc' },
+    { label: 'Date (newest first)', value: 'date,desc' },
+    { label: 'Date (oldest first)', value: 'date,asc' },
+    { label: 'Name (A-Z)', value: 'name,asc' },
+    { label: 'Name (Z-A)', value: 'name,desc' },
   ];
   private readonly unsubscribe = new Subject<void>();
 
