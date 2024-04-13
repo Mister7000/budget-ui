@@ -4,7 +4,18 @@ import { InfiniteScrollCustomEvent, ModalController, RefresherCustomEvent } from
 import { ExpenseModalComponent } from '../expense-modal/expense-modal.component';
 import { Category, CategoryCriteria, Expense, ExpenseCriteria, SortOption } from '../../shared/domain';
 import { formatPeriod } from '../../shared/period';
-import { BehaviorSubject, debounce, from, groupBy, interval, mergeMap, Subject, takeUntil, toArray } from 'rxjs';
+import {
+  BehaviorSubject,
+  debounce,
+  finalize,
+  from,
+  groupBy,
+  interval,
+  mergeMap,
+  Subject,
+  takeUntil,
+  toArray,
+} from 'rxjs';
 import { ToastService } from '../../shared/service/toast.service';
 import { ExpenseService } from '../expense.service';
 import { FormBuilder, FormGroup } from '@angular/forms';
@@ -79,18 +90,37 @@ export class ExpenseListComponent implements OnInit, OnDestroy {
     if (!this.searchCriteria.categoryIds?.length) delete this.searchCriteria.categoryIds;
     if (!this.searchCriteria.name) delete this.searchCriteria.name;
     this.loading = true;
+    const groupByDate = this.searchCriteria.sort.startsWith('date');
     this.expenseService
       .getExpenses(this.searchCriteria)
       .pipe(
+        finalize(() => (this.loading = false)),
         mergeMap((expensePage) => {
           this.lastPageReached = expensePage.last;
           next();
-          this.loading = false;
-          if (this.searchCriteria.page === 0 || this.expenseGroups) this.expenseGroups = [];
-          return from(expensePage.content).pipe();
+          if (this.searchCriteria.page === 0 || !this.expenseGroups) this.expenseGroups = [];
+          return from(expensePage.content).pipe(
+            groupBy((expense) => (groupByDate ? expense.date : expense.id)),
+            mergeMap((group) => group.pipe(toArray())),
+          );
         }),
       )
-      .subscribe({});
+      .subscribe({
+        next: (expenses: Expense[]) => {
+          const expenseGroup: ExpenseGroup = {
+            date: expenses[0].date,
+            expenses: this.sortExpenses(expenses),
+          };
+          const expenseGroupWithSameDate = this.expenseGroups!.find((other) => other.date === expenseGroup.date);
+          if (!expenseGroupWithSameDate || !groupByDate) this.expenseGroups!.push(expenseGroup);
+          else
+            expenseGroupWithSameDate.expenses = this.sortExpenses([
+              ...expenseGroupWithSameDate.expenses,
+              ...expenseGroup.expenses,
+            ]);
+        },
+        error: (error) => this.toastService.displayErrorToast('Could not load expenses', error),
+      });
   }
 
   reloadExpenses($event?: any): void {

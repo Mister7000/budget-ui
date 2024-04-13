@@ -13,15 +13,15 @@ export class ExpenseService {
 
   // Read
 
-  getExpenses = (pagingCriteria: CategoryCriteria): Observable<Page<Category>> =>
+  getExpenses = (pagingCriteria: CategoryCriteria): Observable<Page<Expense>> =>
     this.httpClient.get<Page<Expense>>(this.apiUrl, { params: new HttpParams({ fromObject: { ...pagingCriteria } }) });
 
-  getAllExpenses = (sortCriteria: AllCategoryCriteria): Observable<Category[]> =>
+  getAllExpenses = (sortCriteria: AllCategoryCriteria): Observable<Expense[]> =>
     this.httpClient.get<Expense[]>(this.apiV2Url, { params: new HttpParams({ fromObject: { ...sortCriteria } }) });
 
   // Create & Update
 
-  upsertExpense = (category: ExpenseUpsertDto): Observable<void> => this.httpClient.put<void>(this.apiUrl, category);
+  upsertExpense = (expense: ExpenseUpsertDto): Observable<void> => this.httpClient.put<void>(this.apiUrl, expense);
 
   // Delete
 
